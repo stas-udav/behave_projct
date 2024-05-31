@@ -131,12 +131,25 @@ def step_impl(context):
     headings = context.table.headings
     # print(headings)
     # for heading in headings:
+    #     print(context.table.rows)
     #     print(heading)
-    for row in context.table:
-        for heading in headings:
-            
-        # menu_1 = context.table.headings[0]
-    # # searching for menus and submenus
-    # menus = context.driver.find_elements(By.XPATH,'//h3[@class="gh-sbc-parent"]')
-    # sub_menus = context.driver.find_elements(By.XPATH, '//td[.//a[@title and text() = "Motors"]]//a[text() = "Parts & accessories"]')
-
+    issue = []
+    for row in context.table.rows:
+        # print(row)
+        for index, heading in enumerate(headings):
+            # print(index, heading)
+            # print(row[index])
+            menu = context.driver.find_element(By.XPATH, '//td//h3/a')
+            menu_title = menu.text.lower().strip()
+            submenu = context.driver.find_element(By.XPATH, f'//td//h3/a[text()="{heading}"]/parent::h3/following-sibling::ul[1]/li/a')
+            submenu_title = submenu.text.lower().strip()
+            # print(menu_title)
+            # print(submenu_title)
+            if menu_title != heading[index].lower().strip() and submenu_title != row[index].lower().strip():
+                issue.append(f'{menu_title} = {submenu_title}, user data : {heading.lower().strip()} = {row[index].lower().strip()}' )
+                raise Exception(f' Issues discovered:\n{issue}')
+    if issue:
+        print(issue)
+    else:
+        print ("test pass")
+# //table[@id="gh-sbc"]//h3[a[text()="Motors"]]/following-sibling::ul[1]//a
