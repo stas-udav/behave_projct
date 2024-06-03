@@ -47,3 +47,7 @@ Feature: eBay regression
       | Motorcycles            | Video Games & Consoles                   |Coins & Paper Money           |
       | Other vehicles         | Cameras & Photo                          |Sports Memorabilia                   |
 
+
+
+  Scenario: Carousel menu validation
+    And check if carousel is present on page
