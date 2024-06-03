@@ -121,35 +121,47 @@ def step_impl(context, item):
 
 @step('click on the "Shop by category" menu')
 def step_impl(context):
-    shop_by_category = context.driver.find_element(By.XPATH,'//button[@id="gh-shop-a"]')
+    shop_by_category = context.driver.find_element(By.XPATH, '//button[@id="gh-shop-a"]')
     shop_by_category.click()
     time.sleep(10)
 
 
 @step('check following menus contains submenus')
 def step_impl(context):
-    headings = context.table.headings
-    # print(headings)
-    # for heading in headings:
-    #     print(context.table.rows)
-    #     print(heading)
+
+    exclusions = ["All Brands", "All Categories", "Seasonal Sales & Events"]
+    menus = context.driver.find_elements(By.XPATH, '//td//h3[@class="gh-sbc-parent"]/a')
+    menu_title = {}
     issue = []
-    for row in context.table.rows:
-        # print(row)
-        for index, heading in enumerate(headings):
-            # print(index, heading)
-            # print(row[index])
-            menu = context.driver.find_element(By.XPATH, '//td//h3/a')
-            menu_title = menu.text.lower().strip()
-            submenu = context.driver.find_element(By.XPATH, f'//td//h3/a[text()="{heading}"]/parent::h3/following-sibling::ul[1]/li/a')
-            submenu_title = submenu.text.lower().strip()
-            # print(menu_title)
-            # print(submenu_title)
-            if menu_title != heading[index].lower().strip() and submenu_title != row[index].lower().strip():
-                issue.append(f'{menu_title} = {submenu_title}, user data : {heading.lower().strip()} = {row[index].lower().strip()}' )
-                raise Exception(f' Issues discovered:\n{issue}')
-    if issue:
-        print(issue)
-    else:
-        print ("test pass")
-# //table[@id="gh-sbc"]//h3[a[text()="Motors"]]/following-sibling::ul[1]//a
+    for menu in menus:
+        menu_t = menu.text
+        # print(menu_title)
+        if menu_t not in exclusions:
+            menu_title[menu_t] = []
+    time.sleep(0.5)
+
+    for menu in menu_title.keys():
+        if menu not in exclusions:
+            # print(menu)
+            submenus = context.driver.find_elements(By.XPATH,
+                                                    f'//td//h3/a[text()="{menu}"]/parent::h3/following-sibling::ul[1]/li/a')
+            for submenu in submenus:
+                submenu_t = submenu.text
+                menu_title[menu].append(submenu_t)
+                # print(submenu_t)
+    # print(menu_title)
+    def compare_menu_vs_userdata():
+        headings = context.table.headings
+        table_dict = {}
+        for heading in headings:
+            table_dict[heading] = []
+        # print(headings)
+        for row in context.table.rows:
+            for heading in row.headings:
+                table_dict[heading].append(row[heading])
+            # print(table_dict)
+        if menu_title != table_dict:
+            issue.append(f'\n{menu_title}, {table_dict}')
+            raise Exception(f'Menu titles {menu_title} do not match {table_dict}')
+
+    compare_menu_vs_userdata()

@@ -41,8 +41,8 @@ Feature: eBay regression
   Scenario: Flying menu validation
     And click on the "Shop by category" menu
     Then check following menus contains submenus
-      | Motors                 | Electronics                              | Collectibles & Art|
-      | Parts & accessories    | Computers, Tablets & Network Hardware    |Trading Cards|
+      | Motors                 | Electronics                              |Collectibles & Art|
+      | Parts& accessories    | Computers, Tablets & Network Hardware    |Trading Cards|
       | Cars & trucks          | Cell Phones, Smart Watches & Accessories |Collectibles|
       | Motorcycles            | Video Games & Consoles                   |Coins & Paper Money           |
       | Other vehicles         | Cameras & Photo                          |Sports Memorabilia                   |
