@@ -48,6 +48,12 @@ Feature: eBay regression
       | Other vehicles         | Cameras & Photo                          |Sports Memorabilia                   |
 
 
-
   Scenario: Carousel menu validation
     And check if carousel is present on page
+
+
+   Scenario: Filter validation for item specs
+    When enter "dress" to the searchbar
+    And click the "Search" button
+    Then Filter "Dress Length" by "Midi"
+    Then Validate "Dress Length" are "Midi"
