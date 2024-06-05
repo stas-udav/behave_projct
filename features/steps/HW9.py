@@ -6,6 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import re
 
 
 @step('Validate "{key_name}" are "{expected_value}"')
@@ -45,7 +46,9 @@ def dress_length_validation(context, key_name, expected_value):
 
         item_specs = dict(zip(all_labels_text, all_values_text))
 
-        if item_specs[key_name] != [expected_value]:
+        # if [re.search(rf'\b{expected_value}\b', item_specs[key_name] )] in item_specs[key_name]:
+        if expected_value in item_specs[key_name]:
+            print(key_name, item_specs[key_name], item_specs[key_name])
             issue.append(f"'{title}' is not related to '{expected_value}' by '{key_name}'")
 
         if issue:
