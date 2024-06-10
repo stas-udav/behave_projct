@@ -50,10 +50,21 @@ Feature: eBay regression
 
   Scenario: Carousel menu validation
     And check if carousel is present on page
+    Then check if carousel is rolling and all "4" slides is present
+    Then buttons play, pause, left, right is present
 
-
-   Scenario: Filter validation for item specs
+Scenario: Filter validation for item specs
     When enter "dress" to the searchbar
     And click the "Search" button
-    Then Filter "Dress Length" by "Midi"
-    Then Validate "Dress Length" are "Midi"
+#    Then Select a filter
+#        | Filter       | Value |
+#        | Dress Length | Midi |
+#        | Dress Length | Long |
+#        | Color         | Red |
+#        | Color        | Blue |
+    Then Validate filters
+        | Filter       | Value |
+        | Dress Length | Midi |
+        | Dress Length | Long |
+        | Color         | Red |
+        | Color        | Blue |

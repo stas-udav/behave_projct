@@ -32,7 +32,6 @@ def after_step(context, step):
         # context.driver.save_screenshot("screenshot.png")
 
 
-
 def after_scenario(context, scenario):
     context.driver.close()
     context.driver.quit()
